@@ -36,3 +36,13 @@ Functionality support
 4. Get Employee by Id.
 ````
 
+### Database used
+
+In memory data base
+
+````
+H2 Database.
+
+Data will be flushed when the server is restarted.
+````
+
