@@ -3,6 +3,8 @@ package com.employee.controller;
 import com.employee.data.entity.Employee;
 import com.employee.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,10 @@ public class EmployeeController {
      */
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Registers Employee", response = Employee.class)
+    @ApiResponses({
+        @ApiResponse(code = 201, message = "Employee created successfully"),
+        @ApiResponse(code = 500, message = "Registration failed due to internal server error")})
+
     public ResponseEntity registerEmployee(@RequestBody Employee employee) {
 
         boolean registered = employeeService.registerEmployee(employee);
@@ -51,6 +57,9 @@ public class EmployeeController {
      */
     @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Update Employee", response = Employee.class)
+    @ApiResponses({
+        @ApiResponse(code = 202, message = "Employee updated successfully"),
+        @ApiResponse(code = 304, message = "Employee not modified")})
     public ResponseEntity updateEmployee(@RequestBody Employee employee) {
 
         Optional<Employee> updateEmployee = employeeService.updateEmployee(employee);
@@ -66,6 +75,8 @@ public class EmployeeController {
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "returns all employees", response = Employee.class, responseContainer = "List")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "Get all employees")})
     public ResponseEntity findEmployees() {
         return ResponseEntity.ok().body(employeeService.findAllEmployees());
     }
@@ -78,6 +89,9 @@ public class EmployeeController {
      */
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "returns employee by id", response = Employee.class)
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "Gets employees"),
+        @ApiResponse(code = 404, message = "Not Found")})
     public ResponseEntity<Employee> findEmployeeById(@PathVariable String id) {
 
         Optional<Employee> employee = employeeService.findEmployeeById(id);
@@ -96,6 +110,9 @@ public class EmployeeController {
      */
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "returns employee by id", response = Employee.class)
+    @ApiResponses({
+        @ApiResponse(code = 202, message = "Deleted successfully"),
+        @ApiResponse(code = 422, message = "Un processed entity")})
     public ResponseEntity deleteEmployeeById(@PathVariable String id) {
 
         boolean isDeleted = employeeService.deleteEmployee(id);
