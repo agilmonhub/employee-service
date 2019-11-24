@@ -9,8 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
-@Data
+
 @Entity
+@Data
 public class Employee {
 
 
