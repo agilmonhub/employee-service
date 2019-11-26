@@ -12,11 +12,16 @@ There are several ways to run a Spring Boot application on your local machine. O
 Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
 
 ```shell
-mvn spring-boot:run
+mvn spring-boot:run -Dspring.profiles.active="local"
 
-profile : default
+test cases
+mvn test
+
+profile : local
 port: 8081
-base url: localhost:8081/api/employee
+base url: localhost:8081/
+registration: localhost:8081/registration
+List: localhost:8081/employee
 ```
 
 ### Swagger Information.
@@ -45,4 +50,3 @@ H2 Database.
 
 Data will be flushed when the server is restarted.
 ````
-

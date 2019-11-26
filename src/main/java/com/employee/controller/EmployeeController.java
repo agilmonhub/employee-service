@@ -5,13 +5,16 @@ import com.employee.service.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.io.IOException;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,20 +35,23 @@ public class EmployeeController {
      * @param employee
      * @return
      */
-    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Registers Employee", response = Employee.class)
     @ApiResponses({
         @ApiResponse(code = 201, message = "Employee created successfully"),
         @ApiResponse(code = 500, message = "Registration failed due to internal server error")})
 
-    public ResponseEntity registerEmployee(@RequestBody Employee employee) {
+    public void registerEmployee(@ModelAttribute("employee") Employee employee, HttpServletResponse response)
+        throws IOException {
 
         boolean registered = employeeService.registerEmployee(employee);
 
-        if (registered)
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+        if (registered) {
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", "/registration?success");
+        }
         else
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
 
     }
 

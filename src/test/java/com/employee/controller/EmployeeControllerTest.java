@@ -63,12 +63,12 @@ public class EmployeeControllerTest {
     //when
     MockHttpServletResponse response = mockMvc
         .perform(post("/api/employee/register").content(employeeString)
-            .accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
         .andReturn()
         .getResponse();
 
     // then
-    assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.MOVED_PERMANENTLY.value());
     verify(employeeService, times(1)).registerEmployee(any());
   }
 
@@ -85,7 +85,7 @@ public class EmployeeControllerTest {
     //when
     MockHttpServletResponse response = mockMvc
         .perform(post("/api/employee/register").content(employeeString)
-            .accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
         .andReturn()
         .getResponse();
 
@@ -196,8 +196,7 @@ public class EmployeeControllerTest {
 
   @Test
   public void test_findEmployeeById_not_found() throws Exception {
-    Employee employee = Employee.builder().firstName("A").lastName("B")
-        .dateOfBirth(LocalDate.of(2017, 10, 10)).department("IT").build();
+
     //given
 
     when(employeeService.findEmployeeById("1")).thenReturn(Optional.empty());
@@ -233,10 +232,7 @@ public class EmployeeControllerTest {
   @Test
   public void test_deleteEmployeeById_not_deleted() throws Exception {
 
-    Employee employee = Employee.builder().firstName("A").lastName("B")
-        .dateOfBirth(LocalDate.of(2017, 10, 10)).department("IT").build();
     //given
-
     when(employeeService.deleteEmployee("1")).thenReturn(false);
     //when
     MockHttpServletResponse response = mockMvc
@@ -247,4 +243,5 @@ public class EmployeeControllerTest {
     // then
     assertThat(response.getStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY.value());
   }
+
 }

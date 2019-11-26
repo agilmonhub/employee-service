@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" type="text/css"
+        th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
+  <title>Employee</title>
+</head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{'/api/employee'}" th:method="get" >
+<label>Employee List</label>
+<button type="submit" id="submitButton"> List Employees </button>
+</form>
+</body>
+</html>
